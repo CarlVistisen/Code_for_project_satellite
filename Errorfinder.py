@@ -27,30 +27,27 @@ Y5sum=0
 Xorg=0
 Yorg=0.1
 
-mc=10000
+mc=100
+i_sr=200
+i2=100
+i3=80
+i4=40
+i5=20
+i1=np.lcm(np.lcm(np.lcm(i_sr,i2),np.lcm(i3,i4)),i5)*50
+dt1=1/i1
+a=0.3
+b=0.6
+c=0.3
+T=20
 for j in range(mc):    
-    i_sr=20
-    i2=10
-    i3=8
-    i4=4
-    i5=2
-
     t_list1=[0]
     t=0
-    T=10
-    if j==0:
-        i1=np.lcm(np.lcm(np.lcm(i_sr,i2),np.lcm(i3,i4)),i5)*5
-    dt1=1/i1
-    a=0.3
-    b=0.6
-    c=0.3
     Xn=Xorg
     Yn=Yorg
         
     steps1=int(np.round(T/dt1,0))
     dW1 = np.sqrt(dt1)*(np.random.normal(0,1,steps1))
     for i in range(steps1):
-        
         Xnt=Xn+dt1*Yn
         Yn=Yn-dt1*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn))-dW1[i]*(np.sin(Xn)+Yn*b)*a
         Xn=Xnt
@@ -70,9 +67,10 @@ for j in range(mc):
     dW = (np.zeros(steps))
     f=int(dt/dt1)
     g=f*steps
-    for i in range(steps):
-        for k in range(f):
-            dW[i]+=dW1[i*f+k]
+    dW=dW1.reshape(steps,f).sum(axis=1)
+    #for i in range(steps):
+     #   for k in range(f):
+      #      dW[i]+=dW1[i*f+k]
         
 
     for i in range(steps):
@@ -97,9 +95,8 @@ for j in range(mc):
     dW2 = np.zeros(steps)
     f2=int(dt2/dt1)
     g=f2*steps
-    for i in range(steps):
-        for k in range(f2):
-            dW2[i]+=dW1[i*f2+k]
+    dW2=dW1.reshape(steps,f2).sum(axis=1)
+
         
     for i in range(steps):
         
@@ -118,9 +115,8 @@ for j in range(mc):
     dW3 = np.zeros(steps)
     f3=int(dt3/dt1)
     g=f3*steps
-    for i in range(steps):
-        for k in range(f3):
-            dW3[i]+=dW1[i*f3+k]
+    dW3=dW1.reshape(steps,f3).sum(axis=1)
+
         
     for i in range(steps):
         
@@ -141,9 +137,7 @@ for j in range(mc):
     dW4 = np.zeros(steps)
     f4=int(dt4/dt1)
     g=f4*steps
-    for i in range(steps):
-        for k in range(f4):
-            dW4[i]+=dW1[i*f4+k]
+    dW4=dW1.reshape(steps,f4).sum(axis=1)
 
     for i in range(steps):
         
@@ -163,9 +157,7 @@ for j in range(mc):
     dW5 = np.zeros(steps)
     f5=int(dt5/dt1)
     g=f5*steps
-    for i in range(steps):
-        for k in range(f5):
-            dW5[i]+=dW1[i*f5+k]
+    dW5=dW1.reshape(steps,f5).sum(axis=1)
 
     for i in range(steps):
         
@@ -176,12 +168,12 @@ for j in range(mc):
     Xn5=Xn
     Yn5=Yn
     
-    Yrefsum+=(Yref)**5
-    Y0sum+=(Yn0)**5
-    Y2sum+=(Yn2)**5
-    Y3sum+=(Yn3)**5
-    Y4sum+=(Yn4)**5
-    Y5sum+=(Yn5)**5
+    Yrefsum+=(Yref)**2
+    Y0sum+=(Yn0)**2
+    Y2sum+=(Yn2)**2
+    Y3sum+=(Yn3)**2
+    Y4sum+=(Yn4)**2
+    Y5sum+=(Yn5)**2
         
     
     L2error1+=(Yref-Yn0)**2
@@ -191,11 +183,11 @@ for j in range(mc):
     L2error5+=(Yref-Yn5)**2
     
     
-    L1error1+=np.abs(Xref-Xn0)
-    L1error2+=np.abs(Xref-Xn2)
-    L1error3+=np.abs(Xref-Xn3)
-    L1error4+=np.abs(Xref-Xn4)
-    L1error5+=np.abs(Xref-Xn5)
+    L1error1+=np.abs(Yref-Yn0)
+    L1error2+=np.abs(Yref-Yn2)
+    L1error3+=np.abs(Yref-Yn3)
+    L1error4+=np.abs(Yref-Yn4)
+    L1error5+=np.abs(Yref-Yn5)
     print(j)
 
     

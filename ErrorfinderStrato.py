@@ -1,6 +1,7 @@
 
 import numpy as np 
 import matplotlib.pyplot as plt
+import scipy as scipy
 #np.random.seed(4)
 
 
@@ -27,23 +28,26 @@ Y5sum=0
 Xorg=0
 Yorg=0.1
 
-mc=1000
+mc=10000
+
+i_sr=2000
+i2=1000
+i3=800
+i4=200
+i5=100
+i1=np.lcm(np.lcm(np.lcm(i_sr,i2),np.lcm(i3,i4)),i5)
+T=10
+      
+dt1=1/i1
+a=0.6
+b=0.6
+c=0.3
+
 for j in range(mc):    
-    i_sr=20
-    i2=10
-    i3=8
-    i4=4
-    i5=2
 
     t_list1=[0]
     t=0
-    T=10
-    if j==0:
-        i1=np.lcm(np.lcm(np.lcm(i_sr,i2),np.lcm(i3,i4)),i5)*5
-    dt1=1/i1
-    a=0.3
-    b=0.6
-    c=0.3
+    
     Xn=Xorg
     Yn=Yorg
         
@@ -52,7 +56,7 @@ for j in range(mc):
     for i in range(steps1):
         
         Xnt=Xn+dt1*Yn
-        Yn=Yn-dt1*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn))-dW1[i]*(np.sin(Xn)+Yn*b)*a
+        Yn=Yn-dt1*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn)+0.5*(a**2)*((np.sin(Xn)+Yn*b)*(b)))-dW1[i]*(np.sin(Xn)+Yn*b)*a
         Xn=Xnt
         
     Xref=Xn
@@ -70,22 +74,18 @@ for j in range(mc):
     dW = (np.zeros(steps))
     f=int(dt/dt1)
     g=f*steps
-    for i in range(steps):
-        for k in range(f):
-            dW[i]+=dW1[i*f+k]
+    dW=dW1.reshape(steps,f).sum(axis=1)
         
 
     for i in range(steps):
         
         Xnt=Xn+dt*Yn
-        Yn=Yn-dt*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn))-dW[i]*(np.sin(Xn)+Yn*b)*a
+        Yn=Yn-dt*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn)+0.5*(a**2)*((np.sin(Xn)+Yn*b)*(b)))-dW[i]*(np.sin(Xn)+Yn*b)*a
         Xn=Xnt
 
     Xn0=Xn
     Yn0=Yn
 
-    X2=[0]
-    Y2=[0.1]
     t_list2=[0]
     t=0
     dt2=1/i2
@@ -97,14 +97,12 @@ for j in range(mc):
     dW2 = np.zeros(steps)
     f2=int(dt2/dt1)
     g=f2*steps
-    for i in range(steps):
-        for k in range(f2):
-            dW2[i]+=dW1[i*f2+k]
+    dW2=dW1.reshape(steps,f2).sum(axis=1)
         
     for i in range(steps):
         
         Xnt=Xn+dt2*Yn
-        Yn=Yn-dt2*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn))-dW2[i]*(np.sin(Xn)+Yn*b)*a
+        Yn=Yn-dt2*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn)+0.5*(a**2)*((np.sin(Xn)+Yn*b)*(b)))-dW2[i]*(np.sin(Xn)+Yn*b)*a
         Xn=Xnt
 
     Xn2=Xn
@@ -118,14 +116,12 @@ for j in range(mc):
     dW3 = np.zeros(steps)
     f3=int(dt3/dt1)
     g=f3*steps
-    for i in range(steps):
-        for k in range(f3):
-            dW3[i]+=dW1[i*f3+k]
+    dW3=dW1.reshape(steps,f3).sum(axis=1)
         
     for i in range(steps):
         
         Xnt=Xn+dt3*Yn
-        Yn=Yn-dt3*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn))-dW3[i]*(np.sin(Xn)+Yn*b)*a
+        Yn=Yn-dt3*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn)+0.5*(a**2)*((np.sin(Xn)+Yn*b)*(b)))-dW3[i]*(np.sin(Xn)+Yn*b)*a
         Xn=Xnt
         
     Xn3=Xn
@@ -141,14 +137,12 @@ for j in range(mc):
     dW4 = np.zeros(steps)
     f4=int(dt4/dt1)
     g=f4*steps
-    for i in range(steps):
-        for k in range(f4):
-            dW4[i]+=dW1[i*f4+k]
+    dW4=dW1.reshape(steps,f4).sum(axis=1)
 
     for i in range(steps):
         
         Xnt=Xn+dt4*Yn
-        Yn=Yn-dt4*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn))-dW4[i]*(np.sin(Xn)+Yn*b)*a
+        Yn=Yn-dt4*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn)+0.5*(a**2)*((np.sin(Xn)+Yn*b)*(b)))-dW4[i]*(np.sin(Xn)+Yn*b)*a
         Xn=Xnt
 
     Xn4=Xn
@@ -163,25 +157,23 @@ for j in range(mc):
     dW5 = np.zeros(steps)
     f5=int(dt5/dt1)
     g=f5*steps
-    for i in range(steps):
-        for k in range(f5):
-            dW5[i]+=dW1[i*f5+k]
+    dW5=dW1.reshape(steps,f5).sum(axis=1)
 
     for i in range(steps):
         
         Xnt=Xn+dt5*Yn
-        Yn=Yn-dt5*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn))-dW5[i]*(np.sin(Xn)+Yn*b)*a
+        Yn=Yn-dt5*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn)+0.5*(a**2)*((np.sin(Xn)+Yn*b)*(b)))-dW5[i]*(np.sin(Xn)+Yn*b)*a
         Xn=Xnt
 
     Xn5=Xn
     Yn5=Yn
     
-    Yrefsum+=(Yref)**5
-    Y0sum+=(Yn0)**5
-    Y2sum+=(Yn2)**5
-    Y3sum+=(Yn3)**5
-    Y4sum+=(Yn4)**5
-    Y5sum+=(Yn5)**5
+    Yrefsum+=(Yref)**4
+    Y0sum+=(Yn0)**4
+    Y2sum+=(Yn2)**4
+    Y3sum+=(Yn3)**4
+    Y4sum+=(Yn4)**4
+    Y5sum+=(Yn5)**4
         
     
     L2error1+=(Yref-Yn0)**2
@@ -207,8 +199,9 @@ L1error=[np.abs(L1error1/mc),np.abs(L1error2/mc),np.abs(L1error3/mc),np.abs(L1er
 
 Weakerror=[np.abs((Y0sum-Yrefsum)/mc),np.abs((Y2sum-Yrefsum)/mc),np.abs((Y3sum-Yrefsum)/mc),np.abs((Y4sum-Yrefsum)/mc),np.abs((Y5sum-Yrefsum)/mc)]
 
-print(i1)
-print(dt_list)
+logL2=np.log(L2error)
+logWE=np.log(Weakerror)
+logdt=np.log(dt_list)
 
 
 
@@ -218,20 +211,25 @@ print(np.var(dW3), dt3)
 print(np.var(dW4), dt4)
 print(np.var(dW5), dt5)
 
-plt.plot(dt_list,Weakerror, marker='o')
+plt.loglog(dt_list,Weakerror, marker='o')
+
+
+
+
+slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(logdt, logWE)
+print(slope,r_value)
+plt.xlabel("t")
+plt.ylabel("X")
+plt.title("t versus X")
+plt.show()
+
+
+plt.loglog(dt_list,L2error, marker='o')
 
 
 plt.xlabel("t")
 plt.ylabel("X")
 plt.title("t versus X")
 plt.show()
-print(Weakerror)
-
-plt.plot(dt_list,L2error, marker='o')
-
-
-plt.xlabel("t")
-plt.ylabel("X")
-plt.title("t versus X")
-plt.show()
-print(L2error)
+slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(logdt,logL2)
+print(slope,r_value)
