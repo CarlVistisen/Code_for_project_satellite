@@ -1,6 +1,7 @@
 
 import numpy as np 
 import matplotlib.pyplot as plt
+import scipy as scipy
 #np.random.seed(4)
 
 
@@ -27,18 +28,20 @@ Y5sum=0
 Xorg=0
 Yorg=0.1
 
-mc=100
-i_sr=200
-i2=100
-i3=80
-i4=40
-i5=20
-i1=np.lcm(np.lcm(np.lcm(i_sr,i2),np.lcm(i3,i4)),i5)*50
+mc=1000
+i_sr=2000
+i2=1000
+i3=800
+i4=200
+i5=100
+i1=np.lcm(np.lcm(np.lcm(i_sr,i2),np.lcm(i3,i4)),i5)
+T=10
+      
 dt1=1/i1
 a=0.3
 b=0.6
 c=0.3
-T=20
+
 for j in range(mc):    
     t_list1=[0]
     t=0
@@ -202,6 +205,10 @@ Weakerror=[np.abs((Y0sum-Yrefsum)/mc),np.abs((Y2sum-Yrefsum)/mc),np.abs((Y3sum-Y
 print(i1)
 print(dt_list)
 
+logL2=np.log(L2error)
+logWE=np.log(Weakerror)
+logdt=np.log(dt_list)
+
 
 
 print(np.var(dW), dt)
@@ -210,20 +217,26 @@ print(np.var(dW3), dt3)
 print(np.var(dW4), dt4)
 print(np.var(dW5), dt5)
 
-plt.plot(dt_list,Weakerror, marker='o')
+
+plt.loglog(dt_list,Weakerror, marker='o')
+
+
+
+
+slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(logdt, logWE)
+print(slope,r_value)
+plt.xlabel("t")
+plt.ylabel("X")
+plt.title("t versus X")
+plt.show()
+
+
+plt.loglog(dt_list,L2error, marker='o')
 
 
 plt.xlabel("t")
 plt.ylabel("X")
 plt.title("t versus X")
 plt.show()
-print(Weakerror)
-
-plt.plot(dt_list,L2error, marker='o')
-
-
-plt.xlabel("t")
-plt.ylabel("X")
-plt.title("t versus X")
-plt.show()
-print(L2error)
+slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(logdt,logL2)
+print(slope,r_value)
