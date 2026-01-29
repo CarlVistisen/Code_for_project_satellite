@@ -42,7 +42,7 @@ dt1=1/i1
 a1=[0.3,0.6]
 b1=[0.6,1.2]
 c1=[0.3,0.6]
-save_results_to_ito = Path("/home/carlv/Numerical Stochastic differential equations/Code_for_project_satellite/Results_Ito")
+save_results_to_strat = Path("/home/carlv/Numerical Stochastic differential equations/Code_for_project_satellite/Results_Strato_Millstein")
 for l in c1:
     for h in b1:
         for k in a1:
@@ -50,16 +50,19 @@ for l in c1:
             b=h
             c=l
             for j in range(mc):    
+
                 t_list1=[0]
                 t=0
+                
                 Xn=Xorg
                 Yn=Yorg
                     
                 steps1=int(np.round(T/dt1,0))
                 dW1 = np.sqrt(dt1)*(np.random.normal(0,1,steps1))
                 for i in range(steps1):
+                    
                     Xnt=Xn+dt1*Yn
-                    Yn=Yn-dt1*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn))-dW1[i]*(np.sin(Xn)+Yn*b)*a
+                    Yn=Yn-dt1*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn)+0.5*(a**2)*((np.sin(Xn)+Yn*b)*(b)))-dW1[i]*(np.sin(Xn)+Yn*b)*a+0.5*(a**2)*(np.sin(Xn)+Yn*b)*b*(dW1[i]*dW1[i]-dt1)
                     Xn=Xnt
                     
                 Xref=Xn
@@ -78,22 +81,17 @@ for l in c1:
                 f=int(np.round(dt/dt1,0))
                 g=f*steps
                 dW=dW1.reshape(steps,f).sum(axis=1)
-                #for i in range(steps):
-                 #   for k in range(f):
-                  #      dW[i]+=dW1[i*f+k]
                     
 
                 for i in range(steps):
                     
                     Xnt=Xn+dt*Yn
-                    Yn=Yn-dt*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn))-dW[i]*(np.sin(Xn)+Yn*b)*a
+                    Yn=Yn-dt*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn)+0.5*(a**2)*((np.sin(Xn)+Yn*b)*(b)))-dW[i]*(np.sin(Xn)+Yn*b)*a+0.5*(a**2)*(np.sin(Xn)+Yn*b)*b*(dW[i]*dW[i]-dt)
                     Xn=Xnt
 
                 Xn0=Xn
                 Yn0=Yn
 
-                X2=[0]
-                Y2=[0.1]
                 t_list2=[0]
                 t=0
                 dt2=1/i2
@@ -106,12 +104,11 @@ for l in c1:
                 f2=int(np.round(dt2/dt1,0))
                 g=f2*steps
                 dW2=dW1.reshape(steps,f2).sum(axis=1)
-
                     
                 for i in range(steps):
                     
                     Xnt=Xn+dt2*Yn
-                    Yn=Yn-dt2*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn))-dW2[i]*(np.sin(Xn)+Yn*b)*a
+                    Yn=Yn-dt2*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn)+0.5*(a**2)*((np.sin(Xn)+Yn*b)*(b)))-dW2[i]*(np.sin(Xn)+Yn*b)*a+0.5*(a**2)*(np.sin(Xn)+Yn*b)*b*(dW2[i]*dW2[i]-dt2)
                     Xn=Xnt
 
                 Xn2=Xn
@@ -123,15 +120,14 @@ for l in c1:
                 Yn=Yorg
                 steps=int(np.round(T/dt3,0))
                 dW3 = np.zeros(steps)
-                f3=int(dt3/dt1)
+                f3=int(np.round(dt3/dt1,0))
                 g=f3*steps
                 dW3=dW1.reshape(steps,f3).sum(axis=1)
-
                     
                 for i in range(steps):
                     
                     Xnt=Xn+dt3*Yn
-                    Yn=Yn-dt3*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn))-dW3[i]*(np.sin(Xn)+Yn*b)*a
+                    Yn=Yn-dt3*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn)+0.5*(a**2)*((np.sin(Xn)+Yn*b)*(b)))-dW3[i]*(np.sin(Xn)+Yn*b)*a+0.5*(a**2)*(np.sin(Xn)+Yn*b)*b*(dW3[i]*dW3[i]-dt3)
                     Xn=Xnt
                     
                 Xn3=Xn
@@ -152,7 +148,7 @@ for l in c1:
                 for i in range(steps):
                     
                     Xnt=Xn+dt4*Yn
-                    Yn=Yn-dt4*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn))-dW4[i]*(np.sin(Xn)+Yn*b)*a
+                    Yn=Yn-dt4*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn)+0.5*(a**2)*((np.sin(Xn)+Yn*b)*(b)))-dW4[i]*(np.sin(Xn)+Yn*b)*a+0.5*(a**2)*(np.sin(Xn)+Yn*b)*b*(dW4[i]*dW4[i]-dt4)
                     Xn=Xnt
 
                 Xn4=Xn
@@ -172,18 +168,18 @@ for l in c1:
                 for i in range(steps):
                     
                     Xnt=Xn+dt5*Yn
-                    Yn=Yn-dt5*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn))-dW5[i]*(np.sin(Xn)+Yn*b)*a
+                    Yn=Yn-dt5*(b*Yn+np.sin(Xn)-c*np.sin(2*Xn)+0.5*(a**2)*((np.sin(Xn)+Yn*b)*(b)))-dW5[i]*(np.sin(Xn)+Yn*b)*a+0.5*(a**2)*(np.sin(Xn)+Yn*b)*b*(dW5[i]*dW5[i]-dt5)
                     Xn=Xnt
 
                 Xn5=Xn
                 Yn5=Yn
                 
-                Yrefsum+=(Yref)**2
-                Y0sum+=(Yn0)**2
-                Y2sum+=(Yn2)**2
-                Y3sum+=(Yn3)**2
-                Y4sum+=(Yn4)**2
-                Y5sum+=(Yn5)**2
+                Yrefsum+=(Yref)**4
+                Y0sum+=(Yn0)**4
+                Y2sum+=(Yn2)**4
+                Y3sum+=(Yn3)**4
+                Y4sum+=(Yn4)**4
+                Y5sum+=(Yn5)**4
                     
                 
                 L2error1+=(Yref-Yn0)**2
@@ -193,11 +189,11 @@ for l in c1:
                 L2error5+=(Yref-Yn5)**2
                 
                 
-                L1error1+=np.abs(Yref-Yn0)
-                L1error2+=np.abs(Yref-Yn2)
-                L1error3+=np.abs(Yref-Yn3)
-                L1error4+=np.abs(Yref-Yn4)
-                L1error5+=np.abs(Yref-Yn5)
+                L1error1+=np.abs(Xref-Xn0)
+                L1error2+=np.abs(Xref-Xn2)
+                L1error3+=np.abs(Xref-Xn3)
+                L1error4+=np.abs(Xref-Xn4)
+                L1error5+=np.abs(Xref-Xn5)
                 print(j)
 
                 
@@ -208,9 +204,6 @@ for l in c1:
             L1error=[np.abs(L1error1/mc),np.abs(L1error2/mc),np.abs(L1error3/mc),np.abs(L1error4/mc),np.abs(L1error5/mc)]
 
             Weakerror=[np.abs((Y0sum-Yrefsum)/mc),np.abs((Y2sum-Yrefsum)/mc),np.abs((Y3sum-Yrefsum)/mc),np.abs((Y4sum-Yrefsum)/mc),np.abs((Y5sum-Yrefsum)/mc)]
-
-            print(i1)
-            print(dt_list)
 
             logL2=np.log(L2error)
             logWE=np.log(Weakerror)
@@ -224,7 +217,6 @@ for l in c1:
             print(np.var(dW4), dt4)
             print(np.var(dW5), dt5)
 
-
             plt.loglog(dt_list,Weakerror, marker='o')
 
 
@@ -235,7 +227,7 @@ for l in c1:
             plt.xlabel(f't slope{slope} r_value{r_value}')
             plt.ylabel("X")
             plt.title(f'Weakerror_a{a}_b{b}_c{c} t versus X')
-            plt.savefig(save_results_to_ito /f'Weakerror_a{a}_b{b}_c{c}_Ito.png', dpi = 300)
+            plt.savefig(save_results_to_strat /f'Weakerror_a{a}_b{b}_c{c}_Strato.png', dpi = 300)
             #plt.show()
             plt.clf()
 
@@ -245,9 +237,7 @@ for l in c1:
             plt.xlabel(f't slope{slope} r_value{r_value}')
             plt.ylabel("X")
             plt.title(f'L2error_a{a}_b{b}_c{c} t versus X')
-            plt.savefig(save_results_to_ito / f'L2error_a{a}_b{b}_c{c}_Ito.png', dpi = 300)
+            plt.savefig(save_results_to_strat / f'L2error_a{a}_b{b}_c{c}_StratoMill.png', dpi = 300)
             #plt.show()
             plt.clf()
-
-
-            print(slope,r_value)
+            
