@@ -29,13 +29,13 @@ Y5sum=0
 Xorg=0
 Yorg=0.1
 
-mc=100
-i_sr=2000
-i2=1000
-i3=800
-i4=200
-i5=100
-i1=np.lcm(np.lcm(np.lcm(i_sr,i2),np.lcm(i3,i4)),i5)
+mc=1000
+i_sr=200
+i2=100
+i3=80
+i4=20
+i5=10
+i1=np.lcm(np.lcm(np.lcm(i_sr,i2),np.lcm(i3,i4)),i5)*100
 T=10
       
 dt1=1/i1
@@ -225,12 +225,12 @@ for l in c1:
             print(np.var(dW5), dt5)
 
 
-            plt.loglog(dt_list,Weakerror, marker='o')
-
-
-
-
+            plt.loglog(dt_list,Weakerror, marker='o',linestyle='None')
             slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(logdt, logWE)
+            regLineDt=[dt_list[0],dt_list[-1]]
+            regLineY=[np.log(regLineDt[0])*slope+intercept,np.log(regLineDt[-1])*slope+intercept]
+            plt.loglog((regLineDt),np.exp(regLineY), marker='')
+            
             print(slope,r_value)
             plt.xlabel(f't slope{slope} r_value{r_value}')
             plt.ylabel("X")
@@ -239,9 +239,11 @@ for l in c1:
             #plt.show()
             plt.clf()
 
-
-            plt.loglog(dt_list,L2error, marker='o')
+            plt.loglog(dt_list,L2error, marker='o',color='r',linestyle='None')
             slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(logdt,logL2)
+            regLineY=[np.log(regLineDt[0])*slope+intercept,np.log(regLineDt[-1])*slope+intercept]
+            plt.loglog((regLineDt),np.exp(regLineY), marker='')
+            print(slope,r_value)
             plt.xlabel(f't slope{slope} r_value{r_value}')
             plt.ylabel("X")
             plt.title(f'L2error_a{a}_b{b}_c{c} t versus X')
