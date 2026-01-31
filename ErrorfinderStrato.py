@@ -29,13 +29,13 @@ Y5sum=0
 Xorg=0
 Yorg=0.1
 
-mc=10000
-i_sr=200
-i2=100
-i3=80
-i4=20
-i5=10
-i1=np.lcm(np.lcm(np.lcm(i_sr,i2),np.lcm(i3,i4)),i5)*10
+mc=100
+i_sr=2000
+i2=1000
+i3=800
+i4=200
+i5=100
+i1=np.lcm(np.lcm(np.lcm(i_sr,i2),np.lcm(i3,i4)),i5)*100
 T=10
       
 dt1=1/i1
@@ -174,12 +174,12 @@ for l in c1:
                 Xn5=Xn
                 Yn5=Yn
                 
-                Yrefsum+=(Yref)**4
-                Y0sum+=(Yn0)**4
-                Y2sum+=(Yn2)**4
-                Y3sum+=(Yn3)**4
-                Y4sum+=(Yn4)**4
-                Y5sum+=(Yn5)**4
+                Yrefsum+=(Yref)**2
+                Y0sum+=(Yn0)**2
+                Y2sum+=(Yn2)**2
+                Y3sum+=(Yn3)**2
+                Y4sum+=(Yn4)**2
+                Y5sum+=(Yn5)**2
                     
                 
                 L2error1+=(Yref-Yn0)**2
