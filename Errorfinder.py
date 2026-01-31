@@ -29,12 +29,12 @@ Y5sum=0
 Xorg=0
 Yorg=0.1
 
-mc=1000
-i_sr=200
-i2=100
-i3=80
-i4=20
-i5=10
+mc=100
+i_sr=2000
+i2=1000
+i3=800
+i4=200
+i5=100
 i1=np.lcm(np.lcm(np.lcm(i_sr,i2),np.lcm(i3,i4)),i5)*100
 T=10
       
@@ -123,7 +123,7 @@ for l in c1:
                 Yn=Yorg
                 steps=int(np.round(T/dt3,0))
                 dW3 = np.zeros(steps)
-                f3=int(dt3/dt1)
+                f3=int(np.round(dt3/dt1,0))
                 g=f3*steps
                 dW3=dW1.reshape(steps,f3).sum(axis=1)
 
